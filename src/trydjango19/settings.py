@@ -26,7 +26,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'praveenkumar.sayone@gmail.com'
-EMAIL_HOST_PASSWORD = 'qwerty@123'
+EMAIL_HOST_PASSWORD = 'mypass'
 
 STRIPE_PUBLISHABLE = 'pk_test_ZQv3SAiAFPs4NDgNRjDWABJG'
 STRIPE_SECRET = 'sk_test_jJkAZqFqrz03caYak2Un4ex7'
