@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+    {{ block.super }}
+    <ul>
+        {% if user.is_authenticated %}
+            <h4> {{ user }} is logged in</h4>
+            <li><a href='/inventory/edit_profile'> edit profile</a></li>
+            <li><a href='/inventory/logout'> Logout</a></li>
+        {% else %}
+            <p> Nobody is logged in  </p>
+        {% endif %}
+
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <h2> You have successfully registered !!! </h2>
+    <h4> A activation link has been send to your email </h4>
+
+{% endblock %}

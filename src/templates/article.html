@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+    {{ block.super }}
+    <ul>
+        {% if user.is_authenticated %}
+            <h4> {{ user }} is logged in</h4>
+            <li><a href='/inventory/edit_profile'> edit profile</a></li>
+            <li><a href='/inventory/logout'> Logout</a></li>
+        {% else %}
+            <p> Nobody is logged in  </p>
+        {% endif %}
+
+    </ul>
+{% endblock %}
+
+{% block content %}
+
+    <h1> {{ article.title }} </h1>
+    <p>{{ article.pub_date }}</p>
+    <p>likes: {{ article.likes }}</p>
+
+    <div>
+
+        <hr>
+        <h4>{{ article.description }}</h4>
+        {% if article.likes > 2 %}
+            <p><i>This is popular</i></p>
+        {% else %}
+            <p><i>This is not popular</i></p>
+        {% endif %}
+
+    </div>
+
+    <h4>{{ article.likes }} have like this item</h4>
+
+    <h3><a href="/inventory/like/{{ article.id }}/">Like</a></h3>
+
+    <h2>Comments</h2>
+    {% for c in article.comment_set.all %}
+        <p>{{ c.name }}: {{ c.body }}</p>
+    {% endfor %}
+    <p><a href="/inventory/add_comment/{{ article.id }}">Add comment</a></p>
+
+
+{% endblock %}

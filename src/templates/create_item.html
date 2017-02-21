@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block sidebar %}
+    {{ block.super }}
+    <ul>
+        <li><a href="/inventory/all"> Cancel </a></li>
+        {% if user.is_authenticated %}
+            <h4> {{ user }} is logged in</h4>
+            <li><a href='/inventory/edit_profile'> edit profile</a></li>
+            <li><a href='/inventory/logout'> Logout</a></li>
+        {% else %}
+            <p> Nobody is logged in  </p>
+        {% endif %}
+
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <form action="/inventory/create/" method="post">{% csrf_token %}
+        <ul>{{ form.as_ul }}</ul>
+        <center><input type='submit' value='create'/></center>
+    </form>
+
+{% endblock %}

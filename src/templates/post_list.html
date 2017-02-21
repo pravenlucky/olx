@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+
+
+ {% block javascript %}
+     if(y >= pageHeight){
+         var xhttp = new XMLHttpRequest();
+         xhttp.onreadystatechange = function() {
+         if (this.readyState == 4 && this.status == 200) {
+            content.innerHTML += this.responseText;
+         }
+         };
+         pageNo++;
+         xhttp.open("GET", Finallink, true);
+         xhttp.send();
+     }
+ {% endblock %}
+
+{% block sidebar %}
+    {{ block.super }}
+    <ul>
+        {% if user.is_authenticated %}
+            <h4>{{ user }} is logged in </h4>
+            {% if user.is_staff and user.is_superuser %}
+                <li><a href="/posts/create/"> Create new </a></li>
+                <li><a href="/admin"> Admin </a></li>
+            {% endif %}
+            <li><a href='/inventory/edit_profile'> edit profile</a></li>
+            <li><a href='/inventory/logout'> Logout</a></li>
+        {% else %}
+            <p> Nobody is logged in  </p>
+        {% endif %}
+
+    </ul>
+{% endblock %}
+
+{% block content %}
+
+
+    <div class='col-sm-6 col-sm-offset-3'>
+        <h1>{{ title }}</h1>
+
+        <form method='GET' action=''>
+            <input type='text' name='q' placeholder='Search posts' value='{{ request.GET.q }}'/>
+            <input type='submit' value='Search' />
+        </form>
+
+        {% for obj in object_list %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="thumbnail">
+                        {% if obj.image %}
+                            <img src='{{ obj.image.url }}' class='img-responsive' />
+                        {% endif %}
+                        <div class="caption">
+                            {% if obj.draft %}<h3>Staff only: Draft</h3>{% endif %}
+                            {% if obj.publish > today %}<h3>Staff Only: Future Post</h3>{% endif %}
+                            <h3><a href='{{ obj.get_absolute_url }}'>{{ obj.title }}</a> <small>{{ obj.timestamp|timesince }}</small></h3>
+                            {% if obj.user.get_full_name %}<p>Seller: {{ obj.user.get_full_name }}</p>{% endif %}
+                            <p>Price: {{ obj.price }} $</p>
+                            <h4>{{ obj.content|linebreaks|truncatechars:120 }}</h4>
+                            <p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">View</a></p>
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+            </div>
+        {% endfor %}
+
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if object_list.has_previous %}
+                    <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+                </span>
+
+                {% if object_list.has_next %}
+                    <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">next</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+
+{% endblock content %}
