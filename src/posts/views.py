@@ -25,10 +25,6 @@ import stripe
 
 import datetime
 
-#import src.trydjango19.settings as settings
-
-
-
 stripe.api_key = settings.STRIPE_SECRET
 
 
